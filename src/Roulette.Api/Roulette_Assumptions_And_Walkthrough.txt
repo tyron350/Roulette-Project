@@ -1,0 +1,30 @@
+Roulette Project:
+
+Pre-Requisite to run: Have .NET 5 Runtime installed on your machine/
+
+Assumptions:
+
+I have made the assumption that most of the earnings in roulette is a 2* gain on your bet (with the exception of a full or split number). The code is not dependant on this ruling though, the earnings ratio for each "bet-type" are not coupled together so changing this is as simple as typing the new number. I have also made the assumption that a roulette table will only have a single "active" bet going on at a time. As well as the current open bet, will need to be closed and paid out, before the next bet can be open. 
+
+
+Steps:
+
+The API Project consists of 2 sections:
+	1. Betting
+	1. Reporting
+
+
+1. BETTING
+The betting functionality has three phases being:  PlaceCustomerBet , Spin , Payout
+
+PlaceCustomerBet is the process where the customer is able to pass through all information pertaining to a bet using the Roulette/PlaceCustomerBet endpoint. This endpoint requires a single JSON Input, with all of the information of a single customers different bets on the roulette table. There can be multiple requests to this endpoint for different players. The first customer to send a request through to Roulette/PlaceCustomerBet creates a new betting entry, every subsequent request to the endpoint utilizes the same betting reference until the betting closes. The betting closes once the spin endpoint is triggered
+
+Spin: Roulette/Spin endpoint performs two tasks. It firstly closes the current "open" bet. It then stores the result of the spin for future reference.
+
+Payout: This is the last endpoint which is triggered to end the current betting round. Roulette/Payout is responsibile for retrieving all of the bets taken against the recently closed bet (which is in an UNPAID state), and calculating the payouts for each of the bet taken. The payout information is returned in a json response and the bet is marked as PAID. This is the end of the current betting round, and a new bet can be opened with PlaceCustomerBet.
+
+
+2. REPORTING
+
+The Reporting Endpoint, retrives the details of all previous spins in a JSON Response
+
