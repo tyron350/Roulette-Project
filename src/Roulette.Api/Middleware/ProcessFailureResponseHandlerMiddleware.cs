@@ -31,7 +31,7 @@ namespace Roulette_Project.Middleware
 
         private async Task HandleExceptionAsync(Exception exception)
         {
-            _mediator.Send(new CreateExceptionCommand { StackTrace = exception.StackTrace, ErrorMessage = exception.Message });
+            await _mediator.Send(new CreateExceptionCommand { StackTrace = exception.StackTrace, ErrorMessage = exception.Message });
         }
     }
 }

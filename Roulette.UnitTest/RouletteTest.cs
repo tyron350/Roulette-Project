@@ -235,5 +235,35 @@ namespace Roulette.UnitTest
             Assert.AreEqual(200, returnValues.winnings);
             Assert.AreEqual("3rd 2-1", returnValues.BetType);
         }
+        [Test]
+        public void Bet_Contains_FullNumber()
+        {
+            //Arrange 
+            CustomerBet customerBet = new CustomerBet() {Number = 1 , NumberFull = 1, BetAmount = 100 };
+            BetResult betResult = new BetResult { Number = 1 };
+
+            //Act
+            var returnValues = customerBet.GetValue(betResult, 0);
+
+
+            //Assert
+            Assert.AreEqual(3500, returnValues.winnings);
+            Assert.AreEqual("Number", returnValues.BetType);
+        }
+        [Test]
+        public void Bet_Contains_SplitNumber()
+        {
+            //Arrange 
+            CustomerBet customerBet = new CustomerBet() { Number = 1, NumberSplit = 1, BetAmount = 100 };
+            BetResult betResult = new BetResult { Number = 1 };
+
+            //Act
+            var returnValues = customerBet.GetValue(betResult, 0);
+
+
+            //Assert
+            Assert.AreEqual(1700, returnValues.winnings);
+            Assert.AreEqual("Number", returnValues.BetType);
+        }
     }
 }

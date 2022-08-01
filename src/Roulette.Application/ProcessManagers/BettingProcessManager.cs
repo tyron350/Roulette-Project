@@ -39,153 +39,156 @@ namespace Roulette.Application.ProcessManagers
             if (currentOpenBet.Id == null)
                 await _mediator.Send(new CreatePlaceBetCommand { Id = placeBetId.ToString() });
 
+            List<Task<string>> tasks = new List<Task<string>>();
 
             //create the customer bet for the new open bet
             if (customerBet.colourBet.Black > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.colourBet.Black,
                     ColourBlack = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.colourBet.Red > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.colourBet.Red,
                     ColourRed = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.evenOddBet.EvenBet > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.evenOddBet.EvenBet,
                     EventNumber = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.evenOddBet.OddBet > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.evenOddBet.OddBet,
                     OddNumber = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.halfBet.FirstHalfBet > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.halfBet.FirstHalfBet,
                     FirstHalf = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.halfBet.SecondHalfBet > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
-                    BetAmount = (int)customerBet.halfBet.SecondHalfBet,
-                    SecondHalf = 1,
+                    BetAmount = (int)customerBet.halfBet.FirstHalfBet,
+                    FirstHalf = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.partitionBet.FirstPartition > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
-                    BetAmount = (int)customerBet.partitionBet.FirstPartition,
-                    FirstTwelve = 1,
+                    BetAmount = (int)customerBet.halfBet.FirstHalfBet,
+                    FirstHalf = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.partitionBet.SecondPartition > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.partitionBet.SecondPartition,
                     SecondTwelve = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.partitionBet.ThirdPartition > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.partitionBet.ThirdPartition,
                     ThirdTwelve = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.twotoOneBet.FirstTwotoOne > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.twotoOneBet.FirstTwotoOne,
                     FirstTwoToOne = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.twotoOneBet.SecondTwotoOne > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.twotoOneBet.SecondTwotoOne,
                     SecondTwoToOne = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             if (customerBet.twotoOneBet.ThirdTwotoOne > 0)
             {
-                await _mediator.Send(new CreateCustomerBetCommand
+                tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                 {
                     BetAmount = (int)customerBet.twotoOneBet.ThirdTwotoOne,
                     ThirdTwoToOne = 1,
                     CustomerIdentityNumber = customerBet.IdentityNumber,
                     PlacebetId = placeBetId
-                });
+                })));
             }
             foreach (var value in customerBet.numberBets)
             {
                 if (value.NumberSplit == 1)
                 {
-                    await _mediator.Send(new CreateCustomerBetCommand
+                    tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                     {
                         BetAmount = (int)value.Value,
                         Number = (int)value.Number,
                         NumberSplit = 1,
                         CustomerIdentityNumber = customerBet.IdentityNumber,
                         PlacebetId = placeBetId
-                    });
+                    })));
                 }
                 if (value.NumberSplit == 0)
                 {
-                    await _mediator.Send(new CreateCustomerBetCommand
+                    tasks.Add(Task.Run(() => _mediator.Send(new CreateCustomerBetCommand
                     {
                         BetAmount = (int)value.Value,
                         Number = (int)value.Number,
                         NumberFull = 1,
                         CustomerIdentityNumber = customerBet.IdentityNumber,
                         PlacebetId = placeBetId
-                    });
+                    })));
                 }
             }
+
+            await Task.WhenAll(tasks);
 
             return JsonSerializer.Serialize(new CustomerPlaceBetInformation { CustomerIdentityNumber = customerBet.IdentityNumber, PlacBetId = placeBetId });
         }
@@ -218,7 +221,8 @@ namespace Roulette.Application.ProcessManagers
                 Number = randomNumber
             };
 
-            await _mediator.Send(new CreateBetResultCommand { 
+            await _mediator.Send(new CreateBetResultCommand
+            {
                 PlacebetId = betResult.Placebet_Id,
                 Black = betResult.Black,
                 Red = betResult.Red,
@@ -260,8 +264,8 @@ namespace Roulette.Application.ProcessManagers
                 {
                     var singleBetBreakdown = new CustomerBetBreakdown() { BetAmount = single.BetAmount };
                     customerIdentityNumber = single.Customer_Id;
-  
-                   var extenstionResults = single.GetValue(latestBetResult, totalPayout);
+
+                    var extenstionResults = single.GetValue(latestBetResult, totalPayout);
 
                     singleBetBreakdown.BetType = extenstionResults.BetType;
                     singleBetBreakdown.TotalWinning = extenstionResults.winnings;
